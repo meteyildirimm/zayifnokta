@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.dot
+*.png
+.venv/
+
+# Gerçek ağ bilgilerini içeren dosyalar GitHub'a yüklenmesin
+gercek/
+*.private.yaml
+rapor.json
+rapor.md

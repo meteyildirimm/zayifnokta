@@ -1,0 +1,51 @@
+# Küçük bir ofis ağı örneği.
+# giris_noktasi: kullanıcıların / internetin ağa girdiği cihaz.
+# kapasite (isteğe bağlı): cihazın taşıyabileceği toplam yük.
+# yuk (isteğe bağlı): servisin toplam yükü; çalışan yedekleri arasında eşit bölüşülür.
+
+giris_noktasi: internet-router
+
+cihazlar:
+  - {isim: internet-router, tur: router}
+  - {isim: firewall-1,      tur: firewall}
+  - {isim: core-switch,     tur: switch}
+  - {isim: kat1-switch,     tur: switch}
+  - {isim: sunucu-web1,     tur: sunucu, kapasite: 10}
+  - {isim: sunucu-web2,     tur: sunucu, kapasite: 10}
+  - {isim: sunucu-db,       tur: sunucu, kapasite: 20}
+  - {isim: sunucu-dosya,    tur: sunucu, kapasite: 10}
+
+baglantilar:
+  - internet-router <-> firewall-1
+  - firewall-1 <-> core-switch
+  - core-switch <-> kat1-switch
+  - core-switch <-> sunucu-web1
+  - kat1-switch <-> sunucu-web2
+  - core-switch <-> sunucu-db
+  - core-switch <-> sunucu-dosya
+
+servisler:
+  # İki sunucuda çalışıyor: yük (12) ikiye bölünür (6+6). Biri bozulursa
+  # kalan sunucuya 12 biner ve kapasite (10) aşılır -> servis yavaşlar.
+  - isim: web-sitesi
+    calistigi_yer: [sunucu-web1, sunucu-web2]
+    ihtiyac_duydugu: [veritabani]
+    onem: 5
+    yuk: 12
+
+  # Tek sunucuda çalışıyor: yedeği yok.
+  - isim: veritabani
+    calistigi_yer: sunucu-db
+    onem: 5
+    yuk: 8
+
+  - isim: dosya-paylasimi
+    calistigi_yer: sunucu-dosya
+    onem: 2
+    yuk: 3
+
+  - isim: yedekleme
+    calistigi_yer: sunucu-dosya
+    ihtiyac_duydugu: [dosya-paylasimi]
+    onem: 1
+    yuk: 2

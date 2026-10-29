@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zayifnokta"
+version = "0.2.0"
+description = "Offline weak-point analyzer: finds single points of failure, capacity risks and hidden double-failure risks in network + service topologies described in YAML."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = ["networkx>=3.0", "PyYAML>=6.0"]
+keywords = ["network", "spof", "single-point-of-failure", "resilience", "redundancy", "blast-radius", "failure-analysis", "yaml", "networkx", "sre"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: System :: Networking",
+  "Topic :: System :: Systems Administration",
+]
+
+[project.scripts]
+zayifnokta = "zayifnokta.cli:main"
+
+[tool.setuptools]
+packages = ["zayifnokta"]
